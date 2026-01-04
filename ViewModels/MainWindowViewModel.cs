@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Security.Cryptography.X509Certificates;
-using System.Transactions;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using SkiaSharp;
@@ -14,10 +7,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using BeamAnalysisApp.Models;
-using System.Runtime.CompilerServices;
-using System.Text;
 using LiveChartsCore.Defaults;
-using System.Collections.Generic;
 
 
 namespace BeamAnalysisApp.ViewModels;

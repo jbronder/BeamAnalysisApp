@@ -165,7 +165,7 @@ public class BeamCalculatorModel
 
             momentSeries.Add(new ObservablePoint(bi, mi));
             shearSeries.Add(new ObservablePoint(bi, vi));
-            deflectionSeries.Add(new ObservablePoint(bi, di)); 
+            deflectionSeries.Add(new ObservablePoint(bi, di));
             bi += delta;
         }
 
