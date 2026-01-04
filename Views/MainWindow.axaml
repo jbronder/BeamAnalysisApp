@@ -91,6 +91,7 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Text="{Binding BeamLoad}"
+                        IsEnabled="{Binding IsOtherBLC0}"
                         Name="BeamLoad"/>
                     <TextBlock
                         Grid.Row="1"
@@ -101,6 +102,7 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Text="{Binding BeamLength}"
+                        IsEnabled="{Binding IsOtherBLC0}"
                         Name="BeamLength" />
                     <TextBlock
                         Grid.Row="2"
@@ -111,6 +113,7 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Text="{Binding BeamInertia}"
+                        IsEnabled="{Binding IsOtherBLC0}"
                         Name="Inertia"/>
                     <TextBlock
                         Grid.Row="3"
@@ -121,6 +124,7 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Text="{Binding BeamElasticity}"
+                        IsEnabled="{Binding IsOtherBLC0}"
                         Name="Elasticity"/>
                 </Grid>
             </StackPanel>

@@ -30,6 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private string? _strBeamLength;
     private string? _strBeamInertia;
     private string? _strBeamElasticity;
+    private bool _isOtherBLC0 = false;
 
     private BeamInputs _currentBeamInputs;
     private MaxBeamResults _maxBeamResults;
@@ -42,6 +43,11 @@ public partial class MainWindowViewModel : ViewModelBase
     public ObservableCollection<ISeries> ShearSeries { get; set; }
     public ObservableCollection<ISeries> DeflectionSeries { get; set; }
 
+    public bool IsOtherBLC0
+    {
+        get => _isOtherBLC0;
+        set => SetProperty(ref _isOtherBLC0, value);
+    }
     private BeamCalculatorModel _bcm;
 
     public MaxBeamResults MaxResults
@@ -175,6 +181,7 @@ public partial class MainWindowViewModel : ViewModelBase
     /// </summary>
     private void OnInputUpdate()
     {
+        IsOtherBLC0 = true;
         MaxResults = _bcm.ComputeExtremes(SelectedBeamLoadCase.BlcId, _currentBeamInputs);
         var diagramData = _bcm.ComputeDiagrams(SelectedBeamLoadCase.BlcId, _currentBeamInputs);
 
