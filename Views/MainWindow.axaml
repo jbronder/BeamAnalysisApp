@@ -1,0 +1,189 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:BeamAnalysisApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="BeamAnalysisApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="BeamAnalysisApp">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid
+        HorizontalAlignment="Center"
+        ColumnDefinitions="Auto, Auto"
+        RowDefinitions="Auto">
+    <StackPanel
+        HorizontalAlignment="Left"
+        Grid.Row="0"
+        Grid.Column="0"
+        Spacing="8">
+
+        <Label HorizontalAlignment="Center" Content="Moment"/>   
+        <lvc:CartesianChart
+            Height="175"
+            Width="800"
+            Series="{Binding MomentSeries}">
+        </lvc:CartesianChart>
+        <Label HorizontalAlignment="Center" Content="Shear"/>   
+        <lvc:CartesianChart
+            Height="175"
+            Width="800"
+            Series="{Binding ShearSeries}">
+        </lvc:CartesianChart>
+        <Label HorizontalAlignment="Center" Content="Deflection"/>   
+        <lvc:CartesianChart
+            Height="175"
+            Width="800"
+            Series="{Binding DeflectionSeries}">
+        </lvc:CartesianChart>
+    </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1">
+            <StackPanel
+                HorizontalAlignment="Right"
+                Spacing="16">
+                
+                <!-- <Border BorderBrush="Red" BorderThickness="2"> -->
+                
+                <Image 
+                    Height="150" 
+                    Width="300" 
+                    Source="{Binding CurrentImage}"/>
+                <!--
+                </Border>
+                <TextBlock Text="{Binding CurrentImageSrc}" />
+                <TextBlock
+                    Text="{Binding SelectedBeamLoadCase.ComboName}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                -->
+                <ComboBox
+                    PlaceholderText="Select A Beam-Load Combo"
+                    ItemsSource="{Binding BeamLoadCases}"
+                    DisplayMemberBinding="{Binding ComboName}"
+                    SelectedValue="{Binding SelectedBeamLoadCase}">
+                    <!--
+                    <ComboBoxItem>Beam Load Combo</ComboBoxItem>
+                    -->
+                </ComboBox>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Text="Input Beam Properties and Load"/>
+                <Grid
+                    ColumnDefinitions="*,100"
+                    RowDefinitions="Auto, Auto, Auto, Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Text="{Binding BeamLoadLabel, TargetNullValue='Load (w or P)'}"/>
+                    <TextBox 
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="{Binding BeamLoad}"
+                        Name="BeamLoad"/>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Text="Beam Length, L (ft)" />
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding BeamLength}"
+                        Name="BeamLength" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Text="Moment of Inertia, I (in^4)"/>
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding BeamInertia}"
+                        Name="Inertia"/>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Text="Modulus of Elasticity, E (ksi)"/> 
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Text="{Binding BeamElasticity}"
+                        Name="Elasticity"/>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel
+                HorizontalAlignment="Center"
+                IsVisible="true">
+                <TextBlock HorizontalAlignment="Center" Text="Results" />
+                <Grid
+                    ColumnDefinitions="200, 100"
+                    RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Content="Max Shear" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="0,8,0,8"
+                        Content="{Binding MaxResults.MaxShear}" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Content="Max Positive Moment" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0,8,0,8"
+                        Content="{Binding MaxResults.MaxPositiveMoment}" />
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Content="Max Negative Moment" />
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="0,8,0,8"
+                        Content="{Binding MaxResults.MaxNegativeMoment}"/>
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Content="Max Deflection" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="0,8,0,8"
+                        Content="{Binding MaxResults.MaxDeflection}"/>
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="0,8,0,8"
+                        Content="L-over Value" />
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="0,8,0,8"
+                        Content="L/overTXT" />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
