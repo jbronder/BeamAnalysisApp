@@ -171,9 +171,27 @@ public partial class MainWindowViewModel : ViewModelBase
         new BeamLoadCase("Beam Fixed At Both Ends - Uniform Load", "avares://BeamAnalysisApp/Assets/blc23.png", "UNIFORM", 23),
     };
 
+    /// <summary>
+    /// Computes the minimum strong axis plastic section modulus, Zx, and
+    /// filters wide-flange beams and Zx values exceeding the minimum value.
+    /// </summary>
     public void DesignPlasticMoment()
     {
-        // TODO
+        var negativeMomentAbs = Math.Abs(MaxResults.MaxNegativeMoment);
+        var positiveMoment = MaxResults.MaxPositiveMoment;
+        var designMoment = Math.Max(negativeMomentAbs, positiveMoment);
+
+        // TODO: Create a binding for toggling Fy values. Use Fy= 50 ksi for now.
+        var minZx = designMoment * 12 / 50.0;
+        var builder = Builders<BeamShape>.Filter;
+        var plasticSectionFilter = builder.And(builder.Gte(b => b.PlasticSectionModulusX, minZx), builder.Eq(b => b.Type, "W"));
+        var results = _shapeCollection.Find(plasticSectionFilter).ToList();
+
+        AvailableBeams.Clear();
+        foreach (var result in results)
+        {
+            AvailableBeams.Add(result);
+        }
     }
 
     /// <summary>
@@ -250,7 +268,6 @@ public partial class MainWindowViewModel : ViewModelBase
         var wideFlangeFilter = Builders<BeamShape>.Filter.Regex(b => b.AISCManualLabel, "W");
         var beamList = _shapeCollection.Find(wideFlangeFilter).ToList();
         AvailableBeams = new ObservableCollection<BeamShape>(beamList);
-
 
         // Simple Instantiation to get a model up and running.
         // TODO: Refactor to use Dependency Injection.

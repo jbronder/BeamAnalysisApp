@@ -226,7 +226,7 @@
                         Content="L/overTXT" />
                 </Grid>
             </StackPanel>
-            <Button Command="{Binding DesignPlasticMoment}">Design For Plastic Moment</Button>
+            <Button Command="{Binding DesignPlasticMoment}">WF Flexure Design (Plastic), Fy=50ksi</Button>
         </StackPanel>
     </Grid>
 </Window>
