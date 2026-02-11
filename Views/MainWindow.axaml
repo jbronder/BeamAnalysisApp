@@ -8,6 +8,7 @@
         x:Class="BeamAnalysisApp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
+        Width="1200" Height="1200"
         Title="BeamAnalysisApp">
 
     <Design.DataContext>
@@ -26,24 +27,61 @@
         Grid.Column="0"
         Spacing="8">
 
-        <Label HorizontalAlignment="Center" Content="Moment"/>   
+        <Label HorizontalAlignment="Center" Content="Moment (k-ft)"/>
         <lvc:CartesianChart
             Height="175"
             Width="800"
             Series="{Binding MomentSeries}">
         </lvc:CartesianChart>
-        <Label HorizontalAlignment="Center" Content="Shear"/>   
+        <Label HorizontalAlignment="Center" Content="Shear (k)"/>
         <lvc:CartesianChart
             Height="175"
             Width="800"
             Series="{Binding ShearSeries}">
         </lvc:CartesianChart>
-        <Label HorizontalAlignment="Center" Content="Deflection"/>   
+        <Label HorizontalAlignment="Center" Content="Deflection (in)"/>   
         <lvc:CartesianChart
             Height="175"
             Width="800"
             Series="{Binding DeflectionSeries}">
         </lvc:CartesianChart>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible">
+            <DataGrid Margin="20"
+                ItemsSource="{Binding AvailableBeams}"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                CanUserReorderColumns="True"
+                CanUserResizeColumns="True"
+                GridLinesVisibility="All"
+                BorderThickness="1"
+                BorderBrush="Gray"
+                Height="275"
+                Width="700">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Header="Shape" Width="100" 
+                        Binding="{Binding AISCManualLabel}" />
+                    <DataGridTextColumn
+                        Header="Weight (PLF)" Width="100"
+                        Binding="{Binding Weight}" />
+                    <DataGridTextColumn
+                        Header="Depth (in)" Width="100"
+                        Binding="{Binding Depth}" />
+                    <DataGridTextColumn
+                        Header="Zx (in^3)" Width="100"
+                        Binding="{Binding PlasticSectionModulusX}" />
+                    <DataGridTextColumn
+                        Header="Ix (in^4)" Width="100"
+                        Binding="{Binding InertiaX}" />
+                    <DataGridTextColumn
+                        Header="Flange Width (in)" Width="100"
+                        Binding="{Binding FlangeWidth}" />
+                    <DataGridTextColumn
+                        Header="Section Area (in^2)" Width="100"
+                        Binding="{Binding Area}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
     </StackPanel>
 
         <StackPanel
@@ -188,6 +226,7 @@
                         Content="L/overTXT" />
                 </Grid>
             </StackPanel>
+            <Button Command="{Binding DesignPlasticMoment}">Design For Plastic Moment</Button>
         </StackPanel>
     </Grid>
 </Window>

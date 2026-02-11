@@ -8,6 +8,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using BeamAnalysisApp.Models;
 using LiveChartsCore.Defaults;
+using MongoDB.Driver;
 
 
 namespace BeamAnalysisApp.ViewModels;
@@ -28,10 +29,14 @@ public partial class MainWindowViewModel : ViewModelBase
     private ObservableCollection<ObservablePoint> _momentData;
     private ObservableCollection<ObservablePoint> _shearData;
     private ObservableCollection<ObservablePoint> _deflectionData;
+    private MongoClient _client;
+    private IMongoCollection<BeamShape> _shapeCollection;
 
     public ObservableCollection<ISeries> MomentSeries { get; set; }
     public ObservableCollection<ISeries> ShearSeries { get; set; }
     public ObservableCollection<ISeries> DeflectionSeries { get; set; }
+
+    public ObservableCollection<BeamShape> AvailableBeams { get; }
 
     public bool IsOtherBLC0
     {
@@ -166,6 +171,11 @@ public partial class MainWindowViewModel : ViewModelBase
         new BeamLoadCase("Beam Fixed At Both Ends - Uniform Load", "avares://BeamAnalysisApp/Assets/blc23.png", "UNIFORM", 23),
     };
 
+    public void DesignPlasticMoment()
+    {
+        // TODO
+    }
+
     /// <summary>
     /// Runs the calculations for the current beam configuration.
     /// </summary>
@@ -232,6 +242,15 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         // Initialize CurrentImage with a simple beam on start-up.
         CurrentImage = LoadImage("avares://BeamAnalysisApp/Assets/blc0.png");
+
+        var dbUri = "mongodb://localhost:27017/";
+        _client = new MongoClient(dbUri);
+        _shapeCollection = _client.GetDatabase("beam").GetCollection<BeamShape>("shapes");
+
+        var wideFlangeFilter = Builders<BeamShape>.Filter.Regex(b => b.AISCManualLabel, "W");
+        var beamList = _shapeCollection.Find(wideFlangeFilter).ToList();
+        AvailableBeams = new ObservableCollection<BeamShape>(beamList);
+
 
         // Simple Instantiation to get a model up and running.
         // TODO: Refactor to use Dependency Injection.
