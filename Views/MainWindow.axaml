@@ -223,7 +223,7 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Margin="0,8,0,8"
-                        Content="L/overTXT" />
+                        Content="{Binding MaxResults.LOverValue}" />
                 </Grid>
             </StackPanel>
             <Button Command="{Binding DesignPlasticMoment}">WF Flexure Design (Plastic), Fy=50ksi</Button>

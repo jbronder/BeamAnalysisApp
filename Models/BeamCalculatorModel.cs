@@ -53,9 +53,10 @@ public class MaxBeamResults
     public double MaxPositiveMoment { get; set; } = 0;
     public double MaxNegativeMoment { get; set; } = 0;
     public double MaxDeflection { get; set; } = 0;
+    public double LOverValue { get; set; } = 0;
 
     public MaxBeamResults() { }
-    public MaxBeamResults(double shear, double positiveMoment, double negativeMoment, double deflection) { }
+    public MaxBeamResults(double shear, double positiveMoment, double negativeMoment, double deflection, double lOverValue) { }
 }
 
 public class BeamCalculatorModel
@@ -76,7 +77,7 @@ public class BeamCalculatorModel
                 return ComputeExtremesBLC23(beamInputs);
             default:
                 Console.WriteLine("Unhandled Beam Load Case!");
-                return new MaxBeamResults(0, 0, 0, 0);
+                return new MaxBeamResults(0, 0, 0, 0, 0);
         }
     }
 
@@ -102,7 +103,8 @@ public class BeamCalculatorModel
         results.MaxPositiveMoment = load * length * length / 8;
         results.MaxNegativeMoment = 0;
         results.MaxShear = load * length / 2;
-        results.MaxDeflection = (5 * load * Math.Pow((length), 4)) / (384 * elasticity * inertia);
+        results.MaxDeflection = ((5 * load * Math.Pow((length), 4)) / (384 * elasticity * inertia)) * Math.Pow(12, 3);
+        results.LOverValue = length * 12 / results.MaxDeflection;
         return results;
     }
 
@@ -113,7 +115,8 @@ public class BeamCalculatorModel
         results.MaxPositiveMoment = load * length * length / 24;
         results.MaxNegativeMoment = load * length * length / 12;
         results.MaxShear = load * length / 2;
-        results.MaxDeflection = (load * Math.Pow((12 * length), 4)) / (384 * elasticity * inertia);
+        results.MaxDeflection = ((load * Math.Pow((length), 4)) / (384 * elasticity * inertia)) * Math.Pow(12, 3);
+        results.LOverValue = length * 12 / results.MaxDeflection;
         return results;
     }
 
@@ -132,7 +135,7 @@ public class BeamCalculatorModel
         {
             double mi = (load * bi / 2) * (length - bi);
             double vi = load * ((length / 2) - bi);
-            double di = ((load * bi) / (24 * elasticity * inertia)) * (Math.Pow(length, 3) - (2 * length * Math.Pow(bi, 2)) + Math.Pow(bi, 3));
+            double di = ((load * bi) * Math.Pow(12, 3) / (24 * elasticity * inertia)) * (Math.Pow(length, 3) - (2 * length * Math.Pow(bi, 2)) + Math.Pow(bi, 3));
 
             momentSeries.Add(new ObservablePoint(bi, mi));
             shearSeries.Add(new ObservablePoint(bi, vi));
@@ -161,7 +164,7 @@ public class BeamCalculatorModel
         {
             double mi = (load / 12) * (6 * length * bi - Math.Pow(length, 2) - (6 * Math.Pow(bi, 2)));
             double vi = (load) * ((length / 2) - bi);
-            double di = (load * Math.Pow(bi, 2) / (24 * elasticity * inertia)) * (Math.Pow(length - bi, 2));
+            double di = (load * Math.Pow(bi, 2) * Math.Pow(12, 3) / (24 * elasticity * inertia)) * (Math.Pow(length - bi, 2));
 
             momentSeries.Add(new ObservablePoint(bi, mi));
             shearSeries.Add(new ObservablePoint(bi, vi));
