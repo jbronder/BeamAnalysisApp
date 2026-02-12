@@ -178,7 +178,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="0,8,0,8"
-                        Content="Max Shear" />
+                        Content="Max Shear (k)" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="1"
@@ -188,7 +188,7 @@
                         Grid.Row="1"
                         Grid.Column="0"
                         Margin="0,8,0,8"
-                        Content="Max Positive Moment" />
+                        Content="Max Positive Moment (k-ft)" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="1"
@@ -198,7 +198,7 @@
                         Grid.Row="2"
                         Grid.Column="0"
                         Margin="0,8,0,8"
-                        Content="Max Negative Moment" />
+                        Content="Max Negative Moment (k-ft)" />
                     <Label
                         Grid.Row="2"
                         Grid.Column="1"
@@ -208,7 +208,7 @@
                         Grid.Row="3"
                         Grid.Column="0"
                         Margin="0,8,0,8"
-                        Content="Max Deflection" />
+                        Content="Max Deflection (in)" />
                     <Label
                         Grid.Row="3"
                         Grid.Column="1"
