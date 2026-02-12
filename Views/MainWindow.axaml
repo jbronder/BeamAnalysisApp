@@ -227,6 +227,8 @@
                 </Grid>
             </StackPanel>
             <Button Command="{Binding DesignPlasticMoment}">WF Flexure Design (Plastic), Fy=50ksi</Button>
+            <Button Command="{Binding DesignLOver360}">WF L/360 Stiffness Design</Button>
+            <Button Command="{Binding DesignLOver240}">WF L/240 Stiffness Design</Button>
         </StackPanel>
     </Grid>
 </Window>

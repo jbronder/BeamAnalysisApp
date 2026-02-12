@@ -195,6 +195,48 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// Computes the minimum strong axis, Ix, stiffness for wide-flange beams
+    /// targeting L/360.
+    /// </summary>
+    public void DesignLOver360()
+    {
+        var flexConstant = MaxResults.MaxDeflection * _currentBeamInputs.BeamInertia;
+        var lOver360Limit = _currentBeamInputs.BeamLength * 12 / 360;
+
+        var minIx = flexConstant / lOver360Limit;
+        var builder = Builders<BeamShape>.Filter;
+        var ixFilter = builder.And(builder.Gte(b => b.InertiaX, minIx), builder.Eq(b => b.Type, "W"));
+        var results = _shapeCollection.Find(ixFilter).ToList();
+
+        AvailableBeams.Clear();
+        foreach (var result in results)
+        {
+            AvailableBeams.Add(result);
+        }
+    }
+
+    /// <summary>
+    /// Computes the minimum strong axis, Ix, stiffness for wide-flange beams
+    /// targeting L/240.
+    /// </summary>
+    public void DesignLOver240()
+    {
+        var flexConstant = MaxResults.MaxDeflection * _currentBeamInputs.BeamInertia;
+        var lOver360Limit = _currentBeamInputs.BeamLength * 12 / 240;
+
+        var minIx = flexConstant / lOver360Limit;
+        var builder = Builders<BeamShape>.Filter;
+        var ixFilter = builder.And(builder.Gte(b => b.InertiaX, minIx), builder.Eq(b => b.Type, "W"));
+        var results = _shapeCollection.Find(ixFilter).ToList();
+
+        AvailableBeams.Clear();
+        foreach (var result in results)
+        {
+            AvailableBeams.Add(result);
+        }
+    }
+
+    /// <summary>
     /// Runs the calculations for the current beam configuration.
     /// </summary>
     private void OnInputUpdate()
